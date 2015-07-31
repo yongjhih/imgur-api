@@ -1,1 +1,1 @@
-include ':app', ':imgurapitestapplication'
+include ':imgur-api', ':imgur-api-app'
