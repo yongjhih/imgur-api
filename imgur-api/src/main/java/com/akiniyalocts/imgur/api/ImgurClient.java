@@ -28,6 +28,17 @@ public abstract class ImgurClient implements ImgurAPI {
     private static ImgurClient instance;
 
     /**
+     * To make requests for the current account, you may use me as the {username} parameter.
+     * For example, https://api.imgur.com/3/account/me/images will request all the images
+     * for the account that is currently authenticated.
+     *
+     * @see https://api.imgur.com/endpoints/account#current
+     */
+    public void getImages(Callback<List<Image>> cb) {
+        getImages("me", cb);
+    }
+
+    /**
      * Use to obtain instance of ImgurClient
      * Instance will be created if it was not created previously
      */
