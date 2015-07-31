@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+}
+
 apply plugin: 'com.android.application'
 
 android {
@@ -17,11 +27,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-repositories {
-    maven {
-        url "https://jitpack.io"
+    lintOptions {
+        // For Okio
+        // https://github.com/square/okio/issues/58
+        warning 'InvalidPackage'
     }
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
+    maven { url 'https://dl.bintray.com/yongjhih/maven' } // remove if retrofit 2 merged into jcenter
+    jcenter()
 }
 
 dependencies {

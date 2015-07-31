@@ -17,5 +17,7 @@ public class Constants {
     /**
      * Placeholder for now.
      */
-    public static final String CLIENT_ID = "";
+    public static final String CLIENT_ID = "CLIENT_ID";
+
+    public static final String AUTH_CLIENT_ID = AUTH_CLIENT + ":" + CLIENT_ID;
 }
