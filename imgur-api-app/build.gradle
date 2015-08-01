@@ -35,9 +35,8 @@ android {
 }
 
 repositories {
-    maven { url "https://jitpack.io" }
-    maven { url 'https://dl.bintray.com/yongjhih/maven' } // remove if retrofit 2 merged into jcenter
     jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {

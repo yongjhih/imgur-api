@@ -1,0 +1,88 @@
+package com.akiniyalocts.imgur.api.ui;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import com.akiniyalocts.imgur.api.Constants;
+import com.akiniyalocts.imgur.api.Imgur;
+import com.akiniyalocts.imgur.api.ImgurClient;
+import com.akiniyalocts.imgur.api.R;
+import com.akiniyalocts.imgur.api.aLog;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ImgurLoginActivity extends AppCompatActivity{
+    private static final String TAG = ImgurLoginActivity.class.getSimpleName();
+
+    private static final Pattern accessTokenPattern = Pattern.compile("access_token=([^&]*)");
+    private static final Pattern refreshTokenPattern = Pattern.compile("refresh_token=([^&]*)");
+    private static final Pattern expiresInPattern = Pattern.compile("expires_in=(\\d+)");
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.imgur_activity_login);
+
+        initWebView();
+    }
+
+    private void initWebView(){
+
+        WebView mWebView = (WebView)findViewById(R.id.imgur_login_webview);
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                boolean tokensURL = false;
+
+                if (url.startsWith(Constants.IMGUR_REDIRECT_URL)) {
+                    tokensURL = true;
+
+                    Matcher m;
+
+                    m = refreshTokenPattern.matcher(url);
+                    m.find();
+                    String refreshToken = m.group(1);
+
+                    m = accessTokenPattern.matcher(url);
+                    m.find();
+                    String accessToken = m.group(1);
+
+                    m = expiresInPattern.matcher(url);
+                    m.find();
+                    long expiresIn = Long.valueOf(m.group(1));
+
+                    if (tokensURL) {
+
+                        ImgurLoginActivity.this.finish();
+                        Toast.makeText(ImgurLoginActivity.this, "", Toast.LENGTH_LONG).show();
+
+                        //TODO: Save tokens to local storage somewhere ?
+                        Log.w(
+                                TAG,
+                                "Refresh token: " + refreshToken + "\n" +
+                                        "Acccess token: " + accessToken + "\n" +
+                                        "Expires in: " + expiresIn
+                        );
+                    }
+
+                }
+                return tokensURL;
+            }
+        });
+
+        mWebView.loadUrl(Constants.getGeneratedAuthURL());
+
+    }
+
+
+}

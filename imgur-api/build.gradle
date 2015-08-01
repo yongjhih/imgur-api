@@ -12,7 +12,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
-    maven { url 'https://dl.bintray.com/yongjhih/maven' } // remove if retrofit 2 merged into jcenter
     jcenter()
 }
 
@@ -47,4 +46,7 @@ dependencies {
     compile 'com.infstory:retrofit:2.0.0'
     apt 'com.infstory:retrofit-processor:2.0.0'
     compile 'com.infstory:converter-logansquare-retrofit:1.0.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.0.31-beta'
 }
